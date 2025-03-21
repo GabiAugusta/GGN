@@ -8,7 +8,7 @@ import random
 import math
 import pickle
 
-
+#oi
 
 # global config
 # random / all : randomly init for each sample / init all 2^N_Node states
