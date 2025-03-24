@@ -161,12 +161,12 @@ def func_table(dg,table_type):
 # init node data randomly
 def init_node(dg):
 	for i in range(dg.number_of_nodes()):
-		dg.node[i]['value'] = random.randint(0,1)
+		dg.nodess[i]['value'] = random.randint(0,1)
 # init node with a perticular number
 def init_node_num(dg,num):
 	series = ten2bin(num,N_Node)
 	for i in range(N_Node):
-		dg.node[i]['value'] = series[i]
+		dg.nodess[i]['value'] = series[i]
 
 
 # get the innode of each node 
@@ -190,7 +190,7 @@ def spread(dg,table,step = -1,ignore_attractor = 'mind_attractor'):
 	# add initial value to data
 	origin_val = []
 	for i in range(node_num):
-		origin_val.append(dg.node[i]['value'])
+		origin_val.append(dg.nodess[i]['value'])
 	data.append(origin_val)
 
 	# control the circulates
@@ -207,12 +207,12 @@ def spread(dg,table,step = -1,ignore_attractor = 'mind_attractor'):
 			# get value of it's neighbors
 			b2t = 0
 			for iter,val in enumerate(innodes[i]):
-				b2t += dg.node[val]['value'] * math.pow(2,len(innodes[i])-iter-1)
+				b2t += dg.nodes[val]['value'] * math.pow(2,len(innodes[i])-iter-1)
 			next_val.append(table[i][b2t])
 		# print(next_val)
 		# set value to the net
 		for i in range(node_num):
-			dg.node[i]['value'] = next_val[i]
+			dg.nodes[i]['value'] = next_val[i]
 
 		# if decide to ignore attractor,just continue and never mind if it goes into an attractor
 		if ignore_attractor == 'ignore_attractor':
@@ -237,7 +237,7 @@ def spread_prob(dg,DYN,step = 100):
 	# add initial value to data
 	origin_val = []
 	for i in range(node_num):
-		origin_val.append(dg.node[i]['value'])
+		origin_val.append(dg.nodes[i]['value'])
 	data.append(origin_val)
 
 	# control the circulates
@@ -255,7 +255,7 @@ def spread_prob(dg,DYN,step = 100):
 				# num for all neighbors
 				m = len(innodes[i])
 				for iter,val in enumerate(innodes[i]):
-					if dg.node[val]['value'] == 1:
+					if dg.nodes[val]['value'] == 1:
 						k += 1.
 				if random.random() < k / m:
 					next_val.append(1)
@@ -265,7 +265,7 @@ def spread_prob(dg,DYN,step = 100):
 		# print(next_val)
 		# set value to the net
 		for i in range(node_num):
-			dg.node[i]['value'] = next_val[i]
+			dg.nodes[i]['value'] = next_val[i]
 
 		# just add to data to record
 		data.append(next_val)
@@ -279,7 +279,7 @@ def hamming_distance(arr1,arr2):
 # init the net by some certain order,for instance:000 or 010
 def init_orderly(dg,series):
 	for i,val in enumerate(series):
-		dg.node[i]['value'] = val	
+		dg.nodes[i]['value'] = val	
 
 
 # ten2bin
@@ -522,14 +522,14 @@ def distance_grow(dg,time):
 			continue
 		# init and spread with certain or prob dyn type
 		for i in range(N_Node):
-			dg.node[i]['value'] = state0[i]
+			dg.nodes[i]['value'] = state0[i]
 		if DYN_Type == 'table':
 			data0 = spread(dg,table,step = 20,ignore_attractor = 'ignore_attractor')
 		elif DYN_Type == 'prob':
 			data0 = spread_prob(dg,DYN,step=20)
 	
 		for i in range(N_Node):
-			dg.node[i]['value'] = state1[i]
+			dg.nodes[i]['value'] = state1[i]
 		if DYN_Type == 'table':
 			data1 = spread(dg,table,step = 20,ignore_attractor = 'ignore_attractor')
 		elif DYN_Type == 'prob':
@@ -658,7 +658,7 @@ while len(has_explored) < Goal_Data_Num:
 	# init state
 	init_state = []
 	for j in range(N_Node):
-		init_state.append(dg.node[j]['value'])
+		init_state.append(dg.nodes[j]['value'])
 	# if this state has been explored
 	if init_state in has_explored:
 		continue

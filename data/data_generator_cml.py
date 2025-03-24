@@ -33,7 +33,7 @@ class CMLDynamicSimulator():
         # random 4-regular graph
         self.G = nx.random_regular_graph(4, sz, seed=2050)
         # self.G = nx.cycle_graph(sz)
-        A = nx.to_scipy_sparse_matrix(self.G, format='csr')
+        A = nx.to_scipy_sparse_array(self.G, format='csr')
         n, m = A.shape
         diags = A.sum(axis=1)
         D = scipy.sparse.spdiags(diags.flatten(), [0], m, n, format='csr')
