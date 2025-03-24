@@ -11,7 +11,7 @@ np.random.seed(2050)
 torch.manual_seed(2050)
 
 parser = argparse.ArgumentParser()
-parser.add_argument('--nodes', type=int, default=100, help='Number of nodes, default=10')
+parser.add_argument('--nodes', type=int, default=10, help='Number of nodes, default=10')
 parser.add_argument('--samples', type=int, default=700, help='Number of samples in simulation, default=7000')
 parser.add_argument('--prediction-steps', type=int, default=10, help='prediction steps, default=10')
 parser.add_argument('--evolving-steps', type=int, default=100, help='evolving steps, default=100')

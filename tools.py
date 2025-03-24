@@ -125,8 +125,12 @@ def weighted(data, v_x_ratio):
 def load_bn_ggn(batch_size = 128,dyn_type='table'):
 
     # address
-    series_address = './data/bn/mark-14771-adjmat.pickle'
-    adj_address = './data/bn/mark-14771-series.pickle'
+    #series_address = './data/bn/mark-14771-adjmat.pickle'
+    series_address = './data/bn/mark-63852-adjmat.pickle'
+    
+    
+    #adj_address = './data/bn/mark-14771-series.pickle'
+    adj_address = './data/bn/mark-63852-series.pickle'
 
     # 5/7 for training, 1/7 for validation and 1/7 for test
     use_state = 1024
@@ -227,7 +231,8 @@ def load_bn_ggn(batch_size = 128,dyn_type='table'):
     return train_data_loader,valid_data_loader,test_data_loader,edges
 
 def load_cml_ggn(batch_size = 128):
-    data_path = './data/cml/data_lambd3.6_coupl0.2_node10.pickle'
+    #data_path = './data/cml/data_lambd3.6_coupl0.2_node10.pickle'
+    data_path = './data/cml/data_lambd3.5_coupl0.2_node100.pickle'
     with open(data_path, 'rb') as f:
         object_matrix, train_data, val_data, test_data = pickle.load(f) # (samples, nodes, timesteps, 1)
     print('\nMatrix dimension: %s Train data size: %s Val data size: %s Test data size: %s'

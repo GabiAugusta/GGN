@@ -161,12 +161,12 @@ def func_table(dg,table_type):
 # init node data randomly
 def init_node(dg):
 	for i in range(dg.number_of_nodes()):
-		dg.nodess[i]['value'] = random.randint(0,1)
+		dg.nodes[i]['value'] = random.randint(0,1)
 # init node with a perticular number
 def init_node_num(dg,num):
 	series = ten2bin(num,N_Node)
 	for i in range(N_Node):
-		dg.nodess[i]['value'] = series[i]
+		dg.nodes[i]['value'] = series[i]
 
 
 # get the innode of each node 
@@ -190,7 +190,7 @@ def spread(dg,table,step = -1,ignore_attractor = 'mind_attractor'):
 	# add initial value to data
 	origin_val = []
 	for i in range(node_num):
-		origin_val.append(dg.nodess[i]['value'])
+		origin_val.append(dg.nodes[i]['value'])
 	data.append(origin_val)
 
 	# control the circulates
