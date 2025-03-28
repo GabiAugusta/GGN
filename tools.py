@@ -286,6 +286,60 @@ def load_kuramoto_ggn(batch_size = 128):
 
     return train_loader, val_loader, test_loader, object_matrix
 
+def load_var_data(batch_size=128, data_path='./var_data/'):
+    # Load the time series data
+    data_address = data_path + 'mark-3755-var-data.pickle'
+    random_adj_address = data_path + 'mark-3755-random-adjmat.pickle'
+
+    with open(data_address, 'rb') as f:
+        data = pickle.load(f)
+
+    # Load the random adjacency matrix
+    with open(random_adj_address, 'rb') as f:
+        random_adj_matrix = pickle.load(f)
+
+    # Prepare data_train and data_target
+    data_train = data[:, :, :-1]  # All time steps except the last
+    data_target = data[:, :, 1:]  # All time steps except the first
+
+    # Split the data into training, validation, and test sets
+    train_ratio = 0.7
+    val_ratio = 0.15
+    test_ratio = 0.15
+
+    num_samples = data_train.shape[0]
+    train_size = int(num_samples * train_ratio)
+    val_size = int(num_samples * val_ratio)
+    test_size = num_samples - train_size - val_size
+
+    train_data = data_train[:train_size]
+    train_target = data_target[:train_size]
+    val_data = data_train[train_size:train_size + val_size]
+    val_target = data_target[train_size:train_size + val_size]
+    test_data = data_train[train_size + val_size:]
+    test_target = data_target[train_size + val_size:]
+
+    # Convert to PyTorch tensors with Double type
+    train_data = torch.tensor(train_data, dtype=torch.double)
+    train_target = torch.tensor(train_target, dtype=torch.double)
+    val_data = torch.tensor(val_data, dtype=torch.double)
+    val_target = torch.tensor(val_target, dtype=torch.double)
+    test_data = torch.tensor(test_data, dtype=torch.double)
+    test_target = torch.tensor(test_target, dtype=torch.double)
+    random_adj_matrix = torch.tensor(random_adj_matrix, dtype=torch.double)
+
+    # Create TensorDatasets
+    train_dataset = TensorDataset(train_data, train_target)
+    val_dataset = TensorDataset(val_data, val_target)
+    test_dataset = TensorDataset(test_data, test_target)
+
+    # Create DataLoaders
+    train_loader = DataLoader(train_dataset, batch_size=batch_size, shuffle=True, drop_last=True)
+    val_loader = DataLoader(val_dataset, batch_size=batch_size, shuffle=False, drop_last=True)
+    test_loader = DataLoader(test_dataset, batch_size=batch_size, shuffle=False, drop_last=True)
+
+    return train_loader, val_loader, test_loader, random_adj_matrix
+
 
 def train_batch_dyn_bn(train_data_loader,optimizer_dyn,dyn_learner,adj,loss_fn,simulation_type,prediction_steps):
     step_accu = []
